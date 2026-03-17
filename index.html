@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Board Game Evaluator</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -120,8 +121,9 @@
   .notes-input::placeholder { color:var(--muted); font-weight:300; }
 
   .actions { padding:14px 24px 20px; display:flex; gap:10px; }
-  .btn-submit { flex:1; padding:12px; background:var(--accent); color:#fff; border:none; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:background .2s; }
+  .btn-submit { flex:1; padding:12px; background:var(--accent); color:#fff; border:none; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition: all .2s; }
   .btn-submit:hover { background:#a93226; }
+  .btn-submit:disabled { opacity:.5; cursor:not-allowed; }
   .btn-reset { padding:12px 14px; background:transparent; color:var(--muted); border:1.5px solid var(--border); border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; cursor:pointer; transition:all .2s; }
   .btn-reset:hover { border-color:var(--ink); color:var(--ink); }
 
@@ -129,8 +131,13 @@
   .retake-link:hover { color:var(--ink); }
   .retake-link span { text-decoration:underline; }
 
-  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(60px); background:var(--accent2); color:#fff; padding:10px 22px; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; transition:transform .3s cubic-bezier(.34,1.56,.64,1); z-index:100; }
+  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(60px); color:#fff; padding:10px 22px; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; transition:transform .3s cubic-bezier(.34,1.56,.64,1); z-index:100; }
   .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast.success { background: var(--accent2); }
+  .toast.error { background: var(--accent); }
+
+  .validation-msg { padding: 8px 24px 0; font-family:'DM Mono',monospace; font-size:10px; color: var(--accent); letter-spacing:.5px; display:none; }
+  .validation-msg.show { display:block; }
 </style>
 </head>
 <body>
@@ -209,24 +216,31 @@
     <label class="field-label">Notes &amp; impressions</label>
     <textarea class="notes-input" id="notes" placeholder="What stood out? Best moment? Who would you recommend it to?"></textarea>
   </div>
+  <div class="validation-msg" id="validationMsg">Please rate all 6 criteria and enter a game name before submitting.</div>
   <div class="actions">
-    <button class="btn-submit" onclick="submitRating()">SUBMIT RATING</button>
+    <button class="btn-submit" id="btnSubmit" onclick="submitRating()">SUBMIT RATING</button>
     <button class="btn-reset" onclick="resetRating()">RESET</button>
   </div>
   <div class="retake-link" onclick="retakeQuiz()">↺ <span>Change gamer profile</span></div>
   <div style="height:16px"></div>
 </div>
 
-<div class="toast" id="toast">Rating saved ✓</div>
+<div class="toast" id="toast"></div>
 
 <script>
+  // ── SUPABASE INIT ──
+  const SUPABASE_URL = 'https://vkvkdfnonhynusipypgx.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdmtkZm5vbmh5bnVzaXB5cGd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODcwMzYsImV4cCI6MjA4OTM2MzAzNn0.p3ulppuYyzYqiizYz6AEAvhyvYARuKfEwTqUheJZ6f4';
+  const { createClient } = supabase;
+  const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const CRITERIA = [
-  { id:'complexity', name:'Complexity',         desc:'Learning curve — rules, mechanics, iconography.',         lo:'Very easy',    hi:'Very complex', color:'#7f77dd', verbal:['Trivial','Easy','Moderate','Crunchy','Brutal'] },
-  { id:'depth',      name:'Depth',              desc:'Strategy, long-term planning, decision space.',           lo:'Light',        hi:'Deep',         color:'#378add', verbal:['Filler','Light','Solid','Rich','Masterwork'] },
-  { id:'luck',       name:'Luck vs. skill',     desc:'Randomness vs. player agency. High = skill-driven.',     lo:'Pure luck',    hi:'Pure skill',   color:'#ba7517', verbal:['Pure luck','Luck-heavy','Balanced','Skill-leaning','Pure skill'] },
+  { id:'complexity', name:'Complexity',         desc:'Learning curve — rules, mechanics, iconography.',         lo:'Very easy',    hi:'Very complex',  color:'#7f77dd', verbal:['Trivial','Easy','Moderate','Crunchy','Brutal'] },
+  { id:'depth',      name:'Depth',              desc:'Strategy, long-term planning, decision space.',           lo:'Light',        hi:'Deep',          color:'#378add', verbal:['Filler','Light','Solid','Rich','Masterwork'] },
+  { id:'luck',       name:'Luck vs. skill',     desc:'Randomness vs. player agency. High = skill-driven.',     lo:'Pure luck',    hi:'Pure skill',    color:'#ba7517', verbal:['Pure luck','Luck-heavy','Balanced','Skill-leaning','Pure skill'] },
   { id:'interaction',name:'Player interaction', desc:'Conflict, negotiation, social dynamics.',                 lo:'Solitaire',    hi:'High conflict', color:'#d85a30', verbal:['Solitary','Low-key','Present','Intense','Cutthroat'] },
-  { id:'table',      name:'Table experience',   desc:'Pace, downtime, fun factor, player count flexibility.',  lo:'Painful',      hi:'Delightful',   color:'#1d9e75', verbal:['Painful','Meh','Fine','Great','Brilliant'] },
-  { id:'production', name:'Production',         desc:'Setup time, component quality, box organisation.',       lo:'Poor',         hi:'Excellent',    color:'#888780', verbal:['Flimsy','Basic','Decent','Premium','Stunning'] },
+  { id:'table',      name:'Table experience',   desc:'Pace, downtime, fun factor, player count flexibility.',  lo:'Painful',      hi:'Delightful',    color:'#1d9e75', verbal:['Painful','Meh','Fine','Great','Brilliant'] },
+  { id:'production', name:'Production',         desc:'Setup time, component quality, box organisation.',       lo:'Poor',         hi:'Excellent',     color:'#888780', verbal:['Flimsy','Basic','Decent','Premium','Stunning'] },
 ];
 
 const QUESTIONS = [
@@ -365,6 +379,11 @@ function showProfile(){
   document.getElementById('panelP').classList.add('active');
   document.getElementById('headerTitle').textContent=profile.name;
   document.getElementById('headerSub').textContent='Your personalised scoring weights are ready';
+
+  // Save profile to Supabase
+  db.from('gamer_profiles').insert({ profile: profile.name, weights: weights }).then(({error}) => {
+    if (error) console.warn('Profile save error:', error.message);
+  });
 }
 
 function buildRatingForm(){
@@ -455,16 +474,62 @@ function loadGame(){
   document.getElementById('gameCard').style.display='flex';
 }
 
-function submitRating(){
-  const toast=document.getElementById('toast');
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),2500);
+function showToast(msg, type='success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+async function submitRating(){
+  const gameName = document.getElementById('gameInput').value.trim();
+  const allRated = CRITERIA.every(c => scores[c.id] !== null);
+  const validationMsg = document.getElementById('validationMsg');
+
+  if (!gameName || !allRated) {
+    validationMsg.classList.add('show');
+    return;
+  }
+  validationMsg.classList.remove('show');
+
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = 'SAVING…';
+
+  const rated = CRITERIA.filter(c => scores[c.id]);
+  const totalW = rated.reduce((a,c) => a+weights[c.id], 0);
+  const wavg = rated.reduce((a,c) => a+scores[c.id]*weights[c.id], 0) / totalW;
+
+  const { error } = await db.from('ratings').insert({
+    game_name:     gameName,
+    profile:       profileLabel,
+    complexity:    scores.complexity,
+    depth:         scores.depth,
+    luck:          scores.luck,
+    interaction:   scores.interaction,
+    table_exp:     scores.table,
+    production:    scores.production,
+    weighted_score: parseFloat(wavg.toFixed(2)),
+    notes:         document.getElementById('notes').value.trim() || null,
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'SUBMIT RATING';
+
+  if (error) {
+    console.error(error);
+    showToast('Something went wrong. Please try again.', 'error');
+  } else {
+    showToast('Rating saved ✓', 'success');
+    setTimeout(() => resetRating(), 1500);
+  }
 }
 
 function resetRating(){
   document.getElementById('gameInput').value='';
   document.getElementById('gameCard').style.display='none';
   document.getElementById('notes').value='';
+  document.getElementById('validationMsg').classList.remove('show');
   CRITERIA.forEach(c=>{scores[c.id]=null;renderVerbal(c);});
   updateRadar();
 }
