@@ -550,10 +550,23 @@ async function onUserSignedIn(user) {
 
 /* ── SESSION CHECK ── */
 db.auth.getSession().then(({ data: { session } }) => {
-  if (session?.user) onUserSignedIn(session.user);
+  if (session?.user) {
+    onUserSignedIn(session.user);
+  }
 });
+
 db.auth.onAuthStateChange((_event, session) => {
-  if (session?.user && !currentUser) onUserSignedIn(session.user);
+  if (session?.user && !currentUser) {
+    onUserSignedIn(session.user);
+    // Clean up the ugly token hash from the URL after Google redirect
+    if (window.location.hash && window.location.hash.includes('access_token')) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }
+  if (!session && currentUser) {
+    // User signed out
+    currentUser = null;
+  }
 });
 
 /* ── UI HELPERS ── */
