@@ -15,12 +15,24 @@
   }
   body { background: var(--paper); font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; max-width: 640px; margin: 0 auto; }
 
-  .header { background: var(--ink); padding: 24px 28px 20px; position: relative; overflow: hidden; }
-  .header::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.015) 8px,rgba(255,255,255,.015) 9px); }
-  .eyebrow { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
-  .htitle { font-family:'Playfair Display',serif; font-size:24px; color:#f5f0e8; position:relative; }
-  .hsub { font-size:12px; color:rgba(245,240,232,.5); margin-top:5px; font-weight:300; }
+  /* ── HEADER ── */
+  .header { background: var(--ink); padding: 20px 28px 16px; position: relative; overflow: hidden; }
+  .header::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.015) 8px,rgba(255,255,255,.015) 9px); }
+  .eyebrow { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:5px; }
+  .htitle { font-family:'Playfair Display',serif; font-size:22px; color:#f5f0e8; position:relative; }
+  .hsub { font-size:12px; color:rgba(245,240,232,.5); margin-top:4px; font-weight:300; }
+  .header-user { position:absolute; top:16px; right:20px; display:flex; align-items:center; gap:8px; z-index:1; }
+  .user-email { font-family:'DM Mono',monospace; font-size:9px; color:rgba(245,240,232,.5); letter-spacing:.5px; max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .btn-signout { padding:4px 10px; background:transparent; border:1px solid rgba(255,255,255,.2); border-radius:3px; font-family:'DM Mono',monospace; font-size:9px; color:rgba(245,240,232,.5); cursor:pointer; letter-spacing:1px; transition:all .2s; }
+  .btn-signout:hover { border-color:rgba(255,255,255,.5); color:rgba(245,240,232,.9); }
 
+  /* ── NAV TABS ── */
+  .nav-tabs { display:flex; border-bottom:1px solid var(--border); background:var(--card); }
+  .nav-tab { flex:1; padding:10px 4px; text-align:center; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; }
+  .nav-tab:hover { color:var(--ink); }
+  .nav-tab.active { color:var(--ink); border-bottom-color:var(--ink); }
+
+  /* ── STEPS ── */
   .steps { display:flex; align-items:center; padding:14px 24px 0; }
   .step { display:flex; align-items:center; gap:5px; }
   .step-dot { width:20px; height:20px; border-radius:50%; border:1.5px solid var(--border); background:var(--card); display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); transition:all .2s; flex-shrink:0; }
@@ -31,29 +43,52 @@
   .step.done .step-label { color:var(--accent2); }
   .step-line { flex:1; height:1px; background:var(--border); margin:0 8px; }
 
+  /* ── PANELS ── */
   .panel { display:none; animation:fadeIn .3s ease; }
   .panel.active { display:block; }
+  .page { display:none; }
+  .page.active { display:block; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
 
+  /* ── AUTH PAGE ── */
+  .auth-wrap { padding:32px 24px; }
+  .auth-card { background:var(--card); border:1.5px solid var(--border); border-radius:8px; padding:24px; }
+  .auth-title { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:6px; }
+  .auth-sub { font-size:12px; color:var(--muted); font-weight:300; margin-bottom:24px; line-height:1.6; }
+  .auth-divider { display:flex; align-items:center; gap:12px; margin:16px 0; }
+  .auth-divider-line { flex:1; height:1px; background:var(--border); }
+  .auth-divider-text { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:1px; }
+  .auth-input { width:100%; padding:10px 14px; border:1.5px solid var(--border); background:var(--paper); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--ink); border-radius:4px; outline:none; transition:border-color .2s; margin-bottom:10px; }
+  .auth-input:focus { border-color:var(--ink); }
+  .auth-input::placeholder { color:var(--muted); font-weight:300; }
+  .btn-google { width:100%; padding:11px; background:#fff; border:1.5px solid var(--border); border-radius:4px; font-family:'DM Sans',sans-serif; font-size:13px; color:var(--ink); cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:10px; font-weight:500; }
+  .btn-google:hover { border-color:var(--ink); background:var(--cream); }
+  .btn-google svg { flex-shrink:0; }
+  .btn-auth { width:100%; padding:11px; background:var(--ink); color:var(--paper); border:none; border-radius:4px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:background .2s; margin-bottom:10px; }
+  .btn-auth:hover { background:#333; }
+  .btn-auth:disabled { opacity:.4; cursor:not-allowed; }
+  .auth-toggle { text-align:center; font-size:12px; color:var(--muted); margin-top:14px; }
+  .auth-toggle span { color:var(--ink); cursor:pointer; text-decoration:underline; }
+  .auth-error { font-family:'DM Mono',monospace; font-size:10px; color:var(--accent); margin-bottom:10px; display:none; }
+  .auth-error.show { display:block; }
+
+  /* ── QUESTIONNAIRE ── */
   .q-section { padding:18px 24px 0; }
   .q-progress { height:3px; background:var(--cream); border-radius:2px; margin-bottom:18px; overflow:hidden; }
   .q-fill { height:100%; background:var(--gold); border-radius:2px; transition:width .4s ease; }
   .q-card { background:var(--card); border:1.5px solid var(--border); border-radius:8px; padding:18px; }
   .q-number { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--muted); margin-bottom:8px; }
   .q-text { font-family:'Playfair Display',serif; font-size:16px; line-height:1.5; margin-bottom:16px; }
-
   .chips { display:flex; flex-wrap:wrap; gap:8px; }
   .chip { padding:8px 14px; border:1.5px solid var(--border); border-radius:20px; background:var(--paper); cursor:pointer; font-size:12px; transition:all .15s; user-select:none; }
   .chip:hover { border-color:var(--ink); background:var(--cream); }
   .chip.sel { border-color:var(--ink); background:var(--ink); color:var(--paper); }
   .chip-hint { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); margin-bottom:10px; letter-spacing:.5px; }
-
   .binary { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .bin-btn { padding:14px 10px; border:1.5px solid var(--border); border-radius:6px; background:var(--paper); cursor:pointer; font-size:13px; text-align:center; font-weight:500; transition:all .15s; }
   .bin-btn:hover { border-color:var(--ink); background:var(--cream); }
   .bin-btn.sel { border-color:var(--ink); background:var(--ink); color:var(--paper); }
   .bin-label { font-size:11px; opacity:.6; margin-top:3px; font-weight:300; display:block; }
-
   .q-nav { display:flex; gap:10px; padding:14px 24px 0; }
   .btn-back { padding:10px 14px; background:transparent; color:var(--muted); border:1.5px solid var(--border); border-radius:4px; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1px; cursor:pointer; transition:all .2s; }
   .btn-back:hover { border-color:var(--ink); color:var(--ink); }
@@ -61,6 +96,7 @@
   .btn-next:hover { background:#333; }
   .btn-next:disabled { opacity:.35; cursor:not-allowed; }
 
+  /* ── PROFILE ── */
   .profile-section { padding:18px 24px 0; }
   .profile-card { background:var(--ink); border-radius:8px; padding:18px 20px; margin-bottom:14px; }
   .p-title { font-family:'Playfair Display',serif; font-size:20px; color:var(--gold); margin-bottom:4px; }
@@ -74,6 +110,7 @@
   .btn-proceed { width:calc(100% - 48px); margin:12px 24px 0; padding:12px; background:var(--accent2); color:#fff; border:none; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:background .2s; }
   .btn-proceed:hover { background:#235c3c; }
 
+  /* ── RATING FORM ── */
   .field-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:8px; display:block; }
   .gsearch { padding:18px 24px 0; }
   .grow { display:flex; gap:10px; }
@@ -87,10 +124,8 @@
   .gname { font-family:'Playfair Display',serif; font-size:14px; font-weight:700; }
   .gtags { display:flex; gap:5px; margin-top:3px; flex-wrap:wrap; }
   .gtag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; padding:2px 6px; border-radius:2px; background:var(--cream); color:var(--muted); border:1px solid var(--border); }
-
   .divider { margin:18px 24px 0; border:none; border-top:1px solid var(--border); position:relative; }
   .divider::after { content:'CRITERIA'; position:absolute; top:-8px; left:50%; transform:translateX(-50%); background:var(--paper); padding:0 10px; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:3px; color:var(--muted); }
-
   .criteria-grid { padding:18px 24px 0; display:flex; flex-direction:column; gap:12px; }
   .criterion { background:var(--card); border:1.5px solid var(--border); border-radius:6px; padding:12px 14px; }
   .crit-top { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:3px; }
@@ -98,7 +133,6 @@
   .crit-badge { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; padding:2px 6px; border-radius:2px; background:var(--cream); color:var(--muted); border:1px solid var(--border); }
   .crit-badge.hi { background:#fdf3e3; color:#8a5e0a; border-color:#e8c97a; }
   .crit-desc { font-size:11px; color:var(--muted); font-weight:300; margin-bottom:10px; line-height:1.5; }
-
   .verbal-row { display:grid; grid-template-columns:repeat(5,1fr); gap:5px; margin-bottom:6px; }
   .vbtn { padding:7px 2px; border:1.5px solid var(--border); border-radius:4px; background:var(--cream); cursor:pointer; font-size:10px; font-weight:500; text-align:center; transition:all .15s; line-height:1.2; color:var(--ink); }
   .vbtn:hover { border-color:var(--ink); }
@@ -107,6 +141,7 @@
   .vbtn.sel .vsub { color:rgba(255,255,255,.6); }
   .slider-labels { display:flex; justify-content:space-between; font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); }
 
+  /* ── RADAR ── */
   .radar-wrap { padding:16px 24px 0; }
   .radar-box { background:var(--card); border:1.5px solid var(--border); border-radius:8px; padding:16px; display:flex; flex-direction:column; align-items:center; }
   .radar-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-bottom:12px; align-self:flex-start; }
@@ -115,124 +150,185 @@
   .overall-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; }
   .overall-profile { font-size:12px; color:var(--muted); margin-top:3px; font-weight:300; }
 
+  /* ── MY RATINGS PAGE ── */
+  .page-section { padding:18px 24px 0; }
+  .page-title { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:4px; }
+  .page-sub { font-size:12px; color:var(--muted); font-weight:300; margin-bottom:18px; }
+  .rating-card { background:var(--card); border:1.5px solid var(--border); border-radius:8px; padding:16px; margin-bottom:14px; }
+  .rating-card-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:4px; }
+  .rating-game-name { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; }
+  .rating-score { font-family:'DM Mono',monospace; font-size:20px; color:var(--gold); font-weight:500; }
+  .rating-meta { font-family:'DM Mono',monospace; font-size:9px; color:var(--muted); letter-spacing:.5px; margin-bottom:12px; }
+  .rating-notes { font-size:12px; color:var(--muted); font-style:italic; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); line-height:1.5; }
+  .empty-state { text-align:center; padding:40px 20px; color:var(--muted); }
+  .empty-state-title { font-family:'Playfair Display',serif; font-size:18px; margin-bottom:8px; color:var(--ink); }
+  .empty-state-sub { font-size:12px; font-weight:300; line-height:1.6; }
+  .loading-state { text-align:center; padding:40px; font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:2px; }
+
+  /* ── NOTES & ACTIONS ── */
   .notes-section { padding:14px 24px 0; }
   .notes-input { width:100%; padding:10px 14px; border:1.5px solid var(--border); background:var(--card); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--ink); border-radius:4px; outline:none; resize:vertical; min-height:60px; line-height:1.5; }
   .notes-input:focus { border-color:var(--ink); }
   .notes-input::placeholder { color:var(--muted); font-weight:300; }
-
+  .validation-msg { padding:8px 24px 0; font-family:'DM Mono',monospace; font-size:10px; color:var(--accent); letter-spacing:.5px; display:none; }
+  .validation-msg.show { display:block; }
   .actions { padding:14px 24px 20px; display:flex; gap:10px; }
-  .btn-submit { flex:1; padding:12px; background:var(--accent); color:#fff; border:none; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition: all .2s; }
+  .btn-submit { flex:1; padding:12px; background:var(--accent); color:#fff; border:none; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
   .btn-submit:hover { background:#a93226; }
   .btn-submit:disabled { opacity:.5; cursor:not-allowed; }
   .btn-reset { padding:12px 14px; background:transparent; color:var(--muted); border:1.5px solid var(--border); border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; cursor:pointer; transition:all .2s; }
   .btn-reset:hover { border-color:var(--ink); color:var(--ink); }
-
   .retake-link { text-align:center; padding:8px 24px 0; font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); cursor:pointer; letter-spacing:1px; }
   .retake-link:hover { color:var(--ink); }
   .retake-link span { text-decoration:underline; }
 
-  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(60px); color:#fff; padding:10px 22px; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; transition:transform .3s cubic-bezier(.34,1.56,.64,1); z-index:100; }
+  /* ── TOAST ── */
+  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(60px); color:#fff; padding:10px 22px; border-radius:4px; font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; transition:transform .3s cubic-bezier(.34,1.56,.64,1); z-index:100; white-space:nowrap; }
   .toast.show { transform:translateX(-50%) translateY(0); }
-  .toast.success { background: var(--accent2); }
-  .toast.error { background: var(--accent); }
-
-  .validation-msg { padding: 8px 24px 0; font-family:'DM Mono',monospace; font-size:10px; color: var(--accent); letter-spacing:.5px; display:none; }
-  .validation-msg.show { display:block; }
+  .toast.success { background:var(--accent2); }
+  .toast.error { background:var(--accent); }
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="eyebrow">Board Game Evaluator</div>
-  <div class="htitle" id="headerTitle">Your Gamer Profile</div>
-  <div class="hsub" id="headerSub">A quick questionnaire to personalise your score weights</div>
-</div>
-
-<div class="steps" id="stepIndicator">
-  <div class="step active" id="step-q"><div class="step-dot">1</div><span class="step-label">Profile</span></div>
-  <div class="step-line"></div>
-  <div class="step" id="step-p"><div class="step-dot">2</div><span class="step-label">Weights</span></div>
-  <div class="step-line"></div>
-  <div class="step" id="step-r"><div class="step-dot">3</div><span class="step-label">Rate</span></div>
-</div>
-
-<div class="panel active" id="panelQ">
-  <div class="q-section">
-    <div class="q-progress"><div class="q-fill" id="qFill" style="width:0%"></div></div>
-    <div class="q-card">
-      <div class="q-number" id="qNumber"></div>
-      <div class="q-text" id="qText"></div>
-      <div id="qHint" class="chip-hint"></div>
-      <div id="qOptions"></div>
-    </div>
-  </div>
-  <div class="q-nav">
-    <button class="btn-back" id="btnBack" onclick="prevQ()" style="display:none">← BACK</button>
-    <button class="btn-next" id="btnNext" onclick="nextQ()" disabled>NEXT →</button>
+  <div class="htitle" id="headerTitle">Welcome</div>
+  <div class="hsub" id="headerSub">Sign in to start rating board games</div>
+  <div class="header-user" id="headerUser" style="display:none">
+    <span class="user-email" id="userEmail"></span>
+    <button class="btn-signout" onclick="signOut()">SIGN OUT</button>
   </div>
 </div>
 
-<div class="panel" id="panelP">
-  <div class="profile-section">
-    <div class="profile-card">
-      <div class="p-title" id="profileName"></div>
-      <div class="p-desc" id="profileDesc"></div>
-      <div class="weights-grid" id="weightsGrid"></div>
-    </div>
-  </div>
-  <button class="btn-proceed" onclick="goToRating()">START RATING GAMES →</button>
-  <div class="retake-link" onclick="retakeQuiz()">↺ <span>Retake questionnaire</span></div>
-  <div style="height:16px"></div>
-</div>
-
-<div class="panel" id="panelR">
-  <div class="gsearch">
-    <label class="field-label">Game title</label>
-    <div class="grow">
-      <input class="ginput" id="gameInput" type="text" placeholder="e.g. Wingspan, Gloomhaven, Catan…">
-      <button class="gbtn" onclick="loadGame()">LOAD →</button>
-    </div>
-  </div>
-  <div class="gcard" id="gameCard">
-    <div class="gthumb" id="gameThumb">🎲</div>
-    <div><div class="gname" id="gameNameD"></div><div class="gtags" id="gameTagsD"></div></div>
-  </div>
-  <hr class="divider">
-  <div class="criteria-grid" id="criteriaGrid"></div>
-  <div class="radar-wrap">
-    <div class="radar-box">
-      <div class="radar-title">Score overview</div>
-      <canvas id="radarCanvas" width="280" height="280"></canvas>
-      <div class="overall-row">
-        <div class="overall-num" id="overallNum">—</div>
-        <div class="overall-meta">
-          <div class="overall-label">Weighted score</div>
-          <div class="overall-profile" id="overallProfile"></div>
-        </div>
+<!-- ═══ AUTH PAGE ═══ -->
+<div class="page active" id="pageAuth">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-title" id="authTitle">Sign in</div>
+      <div class="auth-sub">Rate board games with personalised weighted scores. Your profile and ratings are saved to your account.</div>
+      <button class="btn-google" onclick="signInGoogle()">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider"><div class="auth-divider-line"></div><div class="auth-divider-text">OR</div><div class="auth-divider-line"></div></div>
+      <div class="auth-error" id="authError"></div>
+      <input class="auth-input" id="authEmail" type="email" placeholder="Email address">
+      <input class="auth-input" id="authPassword" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')handleAuth()">
+      <button class="btn-auth" id="btnAuth" onclick="handleAuth()">SIGN IN</button>
+      <div class="auth-toggle">
+        <span id="authToggleText">Don't have an account?</span>
+        <span onclick="toggleAuthMode()"> <span id="authToggleLink">Create one</span></span>
       </div>
     </div>
   </div>
-  <div class="notes-section">
-    <label class="field-label">Notes &amp; impressions</label>
-    <textarea class="notes-input" id="notes" placeholder="What stood out? Best moment? Who would you recommend it to?"></textarea>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div class="page" id="pageApp">
+  <div class="nav-tabs" id="navTabs">
+    <div class="nav-tab active" onclick="switchTab('rate')" id="tab-rate">Rate a Game</div>
+    <div class="nav-tab" onclick="switchTab('myratings')" id="tab-myratings">My Ratings</div>
   </div>
-  <div class="validation-msg" id="validationMsg">Please rate all 6 criteria and enter a game name before submitting.</div>
-  <div class="actions">
-    <button class="btn-submit" id="btnSubmit" onclick="submitRating()">SUBMIT RATING</button>
-    <button class="btn-reset" onclick="resetRating()">RESET</button>
+
+  <!-- RATE TAB -->
+  <div class="page active" id="tabRate">
+    <div class="steps" id="stepIndicator">
+      <div class="step active" id="step-q"><div class="step-dot">1</div><span class="step-label">Profile</span></div>
+      <div class="step-line"></div>
+      <div class="step" id="step-p"><div class="step-dot">2</div><span class="step-label">Weights</span></div>
+      <div class="step-line"></div>
+      <div class="step" id="step-r"><div class="step-dot">3</div><span class="step-label">Rate</span></div>
+    </div>
+
+    <div class="panel active" id="panelQ">
+      <div class="q-section">
+        <div class="q-progress"><div class="q-fill" id="qFill" style="width:0%"></div></div>
+        <div class="q-card">
+          <div class="q-number" id="qNumber"></div>
+          <div class="q-text" id="qText"></div>
+          <div id="qHint" class="chip-hint"></div>
+          <div id="qOptions"></div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" id="btnBack" onclick="prevQ()" style="display:none">← BACK</button>
+        <button class="btn-next" id="btnNext" onclick="nextQ()" disabled>NEXT →</button>
+      </div>
+    </div>
+
+    <div class="panel" id="panelP">
+      <div class="profile-section">
+        <div class="profile-card">
+          <div class="p-title" id="profileName"></div>
+          <div class="p-desc" id="profileDesc"></div>
+          <div class="weights-grid" id="weightsGrid"></div>
+        </div>
+      </div>
+      <button class="btn-proceed" onclick="goToRating()">START RATING GAMES →</button>
+      <div class="retake-link" onclick="retakeQuiz()">↺ <span>Retake questionnaire</span></div>
+      <div style="height:16px"></div>
+    </div>
+
+    <div class="panel" id="panelR">
+      <div class="gsearch">
+        <label class="field-label">Game title</label>
+        <div class="grow">
+          <input class="ginput" id="gameInput" type="text" placeholder="e.g. Wingspan, Gloomhaven, Catan…">
+          <button class="gbtn" onclick="loadGame()">LOAD →</button>
+        </div>
+      </div>
+      <div class="gcard" id="gameCard">
+        <div class="gthumb" id="gameThumb">🎲</div>
+        <div><div class="gname" id="gameNameD"></div><div class="gtags" id="gameTagsD"></div></div>
+      </div>
+      <hr class="divider">
+      <div class="criteria-grid" id="criteriaGrid"></div>
+      <div class="radar-wrap">
+        <div class="radar-box">
+          <div class="radar-title">Score overview</div>
+          <canvas id="radarCanvas" width="260" height="260"></canvas>
+          <div class="overall-row">
+            <div class="overall-num" id="overallNum">—</div>
+            <div class="overall-meta">
+              <div class="overall-label">Weighted score</div>
+              <div class="overall-profile" id="overallProfile"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes-section">
+        <label class="field-label">Notes &amp; impressions</label>
+        <textarea class="notes-input" id="notes" placeholder="What stood out? Best moment? Who would you recommend it to?"></textarea>
+      </div>
+      <div class="validation-msg" id="validationMsg">Please rate all 6 criteria and enter a game name before submitting.</div>
+      <div class="actions">
+        <button class="btn-submit" id="btnSubmit" onclick="submitRating()">SUBMIT RATING</button>
+        <button class="btn-reset" onclick="resetRating()">RESET</button>
+      </div>
+      <div class="retake-link" onclick="retakeQuiz()">↺ <span>Change gamer profile</span></div>
+      <div style="height:16px"></div>
+    </div>
   </div>
-  <div class="retake-link" onclick="retakeQuiz()">↺ <span>Change gamer profile</span></div>
-  <div style="height:16px"></div>
+
+  <!-- MY RATINGS TAB -->
+  <div class="page" id="tabMyratings">
+    <div class="page-section">
+      <div class="page-title">My Ratings</div>
+      <div class="page-sub" id="myRatingsSub">Your personal game ratings</div>
+      <div id="myRatingsList"></div>
+    </div>
+    <div style="height:24px"></div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── SUPABASE INIT ──
-  const SUPABASE_URL = 'https://vkvkdfnonhynusipypgx.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdmtkZm5vbmh5bnVzaXB5cGd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODcwMzYsImV4cCI6MjA4OTM2MzAzNn0.p3ulppuYyzYqiizYz6AEAvhyvYARuKfEwTqUheJZ6f4';
-  const { createClient } = supabase;
-  const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = 'https://vkvkdfnonhynusipypgx.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrdmtkZm5vbmh5bnVzaXB5cGd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3ODcwMzYsImV4cCI6MjA4OTM2MzAzNn0.p3ulppuYyzYqiizYz6AEAvhyvYARuKfEwTqUheJZ6f4';
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const CRITERIA = [
   { id:'complexity', name:'Complexity',         desc:'Learning curve — rules, mechanics, iconography.',         lo:'Very easy',    hi:'Very complex',  color:'#7f77dd', verbal:['Trivial','Easy','Moderate','Crunchy','Brutal'] },
@@ -292,17 +388,213 @@ const PROFILES = [
   { name:"The Tactician",           top:['depth','interaction'], desc:"You thrive on reading opponents and making sharp in-the-moment decisions." },
 ];
 
+const GAMES={
+  'wingspan':{e:'🦅',name:'Wingspan',tags:['Engine building','1–5 players','~70 min']},
+  'gloomhaven':{e:'⚔️',name:'Gloomhaven',tags:['Campaign','1–4 players','~120 min']},
+  'catan':{e:'🏝️',name:'Catan',tags:['Negotiation','3–4 players','~90 min']},
+  'terraforming mars':{e:'🚀',name:'Terraforming Mars',tags:['Engine building','1–5 players','~120 min']},
+  'pandemic':{e:'🦠',name:'Pandemic',tags:['Cooperative','2–4 players','~60 min']},
+  'azul':{e:'🔷',name:'Azul',tags:['Abstract','2–4 players','~45 min']},
+  'scythe':{e:'⚙️',name:'Scythe',tags:['Area control','1–5 players','~115 min']},
+  'spirit island':{e:'🌿',name:'Spirit Island',tags:['Cooperative','1–4 players','~120 min']},
+};
+
+/* ── STATE ── */
+let currentUser = null;
 let currentQ = 0;
 let answers = [];
-for (let i=0;i<QUESTIONS.length;i++) answers.push(QUESTIONS[i].type==='multi'?new Set():null);
 let weights = {};
 let profileLabel = '';
-
-function initWeights() { CRITERIA.forEach(c => weights[c.id] = 1.0); }
-initWeights();
+let profileSaved = false;
 const scores = {};
 CRITERIA.forEach(c => scores[c.id] = null);
+let isSignUp = false;
 
+function initWeights() { CRITERIA.forEach(c => weights[c.id] = 1.0); }
+function initAnswers() {
+  answers = [];
+  for (let i=0;i<QUESTIONS.length;i++) answers.push(QUESTIONS[i].type==='multi'?new Set():null);
+}
+initWeights();
+initAnswers();
+
+/* ── LOCAL STORAGE ── */
+function saveState() {
+  const state = {
+    step: getCurrentStep(),
+    currentQ,
+    answers: answers.map(a => a instanceof Set ? [...a] : a),
+    weights,
+    profileLabel,
+    profileSaved,
+    scores,
+    gameName: document.getElementById('gameInput')?.value || '',
+    notes: document.getElementById('notes')?.value || '',
+  };
+  localStorage.setItem('bge_state', JSON.stringify(state));
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem('bge_state');
+    if (!raw) return false;
+    const state = JSON.parse(raw);
+    currentQ = state.currentQ || 0;
+    answers = (state.answers || []).map((a, i) =>
+      QUESTIONS[i]?.type === 'multi' ? new Set(Array.isArray(a) ? a : []) : a
+    );
+    weights = state.weights || {};
+    profileLabel = state.profileLabel || '';
+    profileSaved = state.profileSaved || false;
+    if (state.scores) Object.assign(scores, state.scores);
+
+    if (state.step === 'profile') {
+      showProfilePanel();
+    } else if (state.step === 'rate') {
+      buildRatingForm();
+      setStep(3);
+      showPanel('panelR');
+      if (state.gameName) {
+        document.getElementById('gameInput').value = state.gameName;
+        loadGame();
+      }
+      if (state.notes) document.getElementById('notes').value = state.notes;
+    } else {
+      renderQ();
+    }
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
+
+function getCurrentStep() {
+  if (document.getElementById('panelR')?.classList.contains('active')) return 'rate';
+  if (document.getElementById('panelP')?.classList.contains('active')) return 'profile';
+  return 'quiz';
+}
+
+function clearState() { localStorage.removeItem('bge_state'); }
+
+/* ── AUTH ── */
+let authMode = 'signin';
+
+function toggleAuthMode() {
+  isSignUp = !isSignUp;
+  document.getElementById('authTitle').textContent = isSignUp ? 'Create account' : 'Sign in';
+  document.getElementById('btnAuth').textContent = isSignUp ? 'CREATE ACCOUNT' : 'SIGN IN';
+  document.getElementById('authToggleText').textContent = isSignUp ? 'Already have an account?' : "Don't have an account?";
+  document.getElementById('authToggleLink').textContent = isSignUp ? 'Sign in' : 'Create one';
+  document.getElementById('authError').classList.remove('show');
+}
+
+async function signInGoogle() {
+  const { error } = await db.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.href }
+  });
+  if (error) showToast(error.message, 'error');
+}
+
+async function handleAuth() {
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const errEl = document.getElementById('authError');
+  const btn = document.getElementById('btnAuth');
+  if (!email || !password) { errEl.textContent = 'Please enter email and password.'; errEl.classList.add('show'); return; }
+  btn.disabled = true;
+  btn.textContent = isSignUp ? 'CREATING…' : 'SIGNING IN…';
+  const { error } = isSignUp
+    ? await db.auth.signUp({ email, password })
+    : await db.auth.signInWithPassword({ email, password });
+  btn.disabled = false;
+  btn.textContent = isSignUp ? 'CREATE ACCOUNT' : 'SIGN IN';
+  if (error) { errEl.textContent = error.message; errEl.classList.add('show'); }
+  else if (isSignUp) { errEl.style.color='var(--accent2)'; errEl.textContent='Check your email to confirm your account.'; errEl.classList.add('show'); }
+}
+
+async function signOut() {
+  await db.auth.signOut();
+  clearState();
+  currentUser = null;
+  showPage('pageAuth');
+  document.getElementById('headerUser').style.display = 'none';
+  document.getElementById('headerTitle').textContent = 'Welcome';
+  document.getElementById('headerSub').textContent = 'Sign in to start rating board games';
+}
+
+async function onUserSignedIn(user) {
+  currentUser = user;
+  document.getElementById('userEmail').textContent = user.email || 'Signed in';
+  document.getElementById('headerUser').style.display = 'flex';
+  document.getElementById('headerTitle').textContent = 'Board Game Evaluator';
+  document.getElementById('headerSub').textContent = 'Rate and explore board games';
+  showPage('pageApp');
+
+  // Check if user already has a saved profile
+  const { data } = await db.from('user_profiles').select('*').eq('id', user.id).single();
+  if (data) {
+    weights = data.weights;
+    profileLabel = data.profile;
+    profileSaved = true;
+    // Skip questionnaire, go straight to rating
+    buildRatingForm();
+    setStep(3);
+    showPanel('panelR');
+    showToast(`Welcome back, ${profileLabel}!`, 'success');
+  } else {
+    // Load saved state or start fresh
+    if (!loadState()) renderQ();
+  }
+}
+
+/* ── SESSION CHECK ── */
+db.auth.getSession().then(({ data: { session } }) => {
+  if (session?.user) onUserSignedIn(session.user);
+});
+db.auth.onAuthStateChange((_event, session) => {
+  if (session?.user && !currentUser) onUserSignedIn(session.user);
+});
+
+/* ── UI HELPERS ── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+}
+
+function showPanel(id) {
+  document.querySelectorAll('#tabRate .panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+tab)?.classList.add('active');
+  document.querySelectorAll('#pageApp > .page, #pageApp .page').forEach(p => {
+    if (p.id === 'tab-'+tab || p.id === 'tabRate' && tab === 'rate' || p.id === 'tabMyratings' && tab === 'myratings') {
+      p.classList.add('active');
+    } else if (p.id === 'tabRate' || p.id === 'tabMyratings') {
+      p.classList.remove('active');
+    }
+  });
+  if (tab === 'myratings') loadMyRatings();
+  saveState();
+}
+
+function showToast(msg, type='success') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+function setStep(n) {
+  ['step-q','step-p','step-r'].forEach((id,i) => {
+    document.getElementById(id).className = 'step'+(i+1<n?' done':i+1===n?' active':'');
+  });
+}
+
+/* ── QUESTIONNAIRE ── */
 function renderQ() {
   const q = QUESTIONS[currentQ];
   document.getElementById('qNumber').textContent = `Question ${currentQ+1} of ${QUESTIONS.length}`;
@@ -320,7 +612,7 @@ function renderQ() {
       const chip=document.createElement('div');
       chip.className='chip'+(sel.has(i)?' sel':'');
       chip.textContent=opt.label;
-      chip.onclick=()=>{ sel.has(i)?sel.delete(i):sel.add(i); renderQ(); };
+      chip.onclick=()=>{ sel.has(i)?sel.delete(i):sel.add(i); renderQ(); saveState(); };
       div.appendChild(chip);
     });
     container.appendChild(div);
@@ -331,7 +623,7 @@ function renderQ() {
       const btn=document.createElement('div');
       btn.className='bin-btn'+(answers[currentQ]===i?' sel':'');
       btn.innerHTML=`${opt.label}<span class="bin-label">${opt.sub||''}</span>`;
-      btn.onclick=()=>{ answers[currentQ]=i; renderQ(); };
+      btn.onclick=()=>{ answers[currentQ]=i; renderQ(); saveState(); };
       div.appendChild(btn);
     });
     container.appendChild(div);
@@ -345,9 +637,10 @@ function nextQ() {
   const ok=q.type==='multi'?answers[currentQ].size>0:answers[currentQ]!==null;
   if(!ok) return;
   if(currentQ<QUESTIONS.length-1){currentQ++;renderQ();}
-  else{computeWeights();showProfile();}
+  else{computeWeights();showProfilePanel();}
+  saveState();
 }
-function prevQ(){if(currentQ>0){currentQ--;renderQ();}}
+function prevQ(){if(currentQ>0){currentQ--;renderQ();saveState();}}
 
 function computeWeights(){
   initWeights();
@@ -362,7 +655,7 @@ function computeWeights(){
   CRITERIA.forEach(c=>weights[c.id]=weights[c.id]/total*6);
 }
 
-function showProfile(){
+function showProfilePanel(){
   const sorted=[...CRITERIA].sort((a,b)=>weights[b.id]-weights[a.id]);
   const top2=sorted.slice(0,2).map(c=>c.id);
   let profile=PROFILES.find(p=>p.top[0]===top2[0]&&p.top[1]===top2[1])||PROFILES.find(p=>p.top.includes(top2[0]))||PROFILES[0];
@@ -375,17 +668,18 @@ function showProfile(){
     return `<div class="w-item"><div class="w-name">${c.name}</div><div class="w-bar"><div class="w-fill" style="width:${pct}%;background:${c.color}"></div></div><div class="w-pct">${Math.round(weights[c.id]*100/6)}%</div></div>`;
   }).join('');
   setStep(2);
-  document.getElementById('panelQ').classList.remove('active');
-  document.getElementById('panelP').classList.add('active');
-  document.getElementById('headerTitle').textContent=profile.name;
-  document.getElementById('headerSub').textContent='Your personalised scoring weights are ready';
+  showPanel('panelP');
+  saveState();
 
-  // Save profile to Supabase
-  db.from('gamer_profiles').insert({ profile: profile.name, weights: weights }).then(({error}) => {
-    if (error) console.warn('Profile save error:', error.message);
-  });
+  // Save profile to Supabase (upsert so it works for both new and returning)
+  if (currentUser && !profileSaved) {
+    db.from('user_profiles').upsert({ id: currentUser.id, profile: profileLabel, weights }).then(({error}) => {
+      if (!error) { profileSaved = true; saveState(); }
+    });
+  }
 }
 
+/* ── RATING FORM ── */
 function buildRatingForm(){
   const grid=document.getElementById('criteriaGrid');
   grid.innerHTML='';
@@ -403,42 +697,41 @@ function buildRatingForm(){
 
 function renderVerbal(c){
   const row=document.getElementById('vrow-'+c.id);
+  if (!row) return;
   row.innerHTML='';
   c.verbal.forEach((label,i)=>{
     const btn=document.createElement('div');
     btn.className='vbtn'+(scores[c.id]===i+1?' sel':'');
     if(scores[c.id]===i+1) btn.style.background=c.color;
     btn.innerHTML=`${label}<span class="vsub">${i+1}/5</span>`;
-    btn.onclick=()=>{ scores[c.id]=i+1; renderVerbal(c); updateRadar(); };
+    btn.onclick=()=>{ scores[c.id]=i+1; renderVerbal(c); updateRadar(); saveState(); };
     row.appendChild(btn);
   });
 }
 
-function updateRadar(){
-  const canvas=document.getElementById('radarCanvas');
+function drawRadar(canvasId, vals, alpha=0.15){
+  const canvas=document.getElementById(canvasId);
+  if (!canvas) return;
   const ctx=canvas.getContext('2d');
   const W=canvas.width,H=canvas.height;
   ctx.clearRect(0,0,W,H);
-  const cx=W/2,cy=H/2,maxR=W/2-38,n=CRITERIA.length;
-  const isDark=window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const gridCol=isDark?'rgba(255,255,255,0.1)':'rgba(0,0,0,0.08)';
-  const labelCol=isDark?'rgba(255,255,255,0.55)':'#7a7060';
+  const cx=W/2,cy=H/2,maxR=W/2-42,n=CRITERIA.length;
+  const gridCol='rgba(0,0,0,0.08)', labelCol='#7a7060';
   const angle=i=>(Math.PI*2*i/n)-Math.PI/2;
   const pt=(i,r)=>({x:cx+r*Math.cos(angle(i)),y:cy+r*Math.sin(angle(i))});
   [1,2,3,4,5].forEach(level=>{
     const r=maxR*level/5;
     ctx.beginPath();
     for(let i=0;i<n;i++){const p=pt(i,r);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}
-    ctx.closePath(); ctx.strokeStyle=gridCol; ctx.lineWidth=1; ctx.stroke();
+    ctx.closePath();ctx.strokeStyle=gridCol;ctx.lineWidth=1;ctx.stroke();
   });
   for(let i=0;i<n;i++){
     ctx.beginPath();ctx.moveTo(cx,cy);const p=pt(i,maxR);ctx.lineTo(p.x,p.y);
     ctx.strokeStyle=gridCol;ctx.lineWidth=1;ctx.stroke();
   }
-  const vals=CRITERIA.map(c=>scores[c.id]||0);
   ctx.beginPath();
   CRITERIA.forEach((c,i)=>{const r=maxR*vals[i]/5,p=pt(i,r);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
-  ctx.closePath();ctx.fillStyle='rgba(192,57,43,0.15)';ctx.fill();ctx.strokeStyle='#c0392b';ctx.lineWidth=2;ctx.stroke();
+  ctx.closePath();ctx.fillStyle=`rgba(192,57,43,${alpha})`;ctx.fill();ctx.strokeStyle='#c0392b';ctx.lineWidth=2;ctx.stroke();
   CRITERIA.forEach((c,i)=>{
     const r=maxR*vals[i]/5,p=pt(i,r);
     if(vals[i]>0){ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle=c.color;ctx.fill();}
@@ -448,22 +741,16 @@ function updateRadar(){
     const p=pt(i,maxR+22);ctx.fillStyle=labelCol;ctx.fillText(c.name,p.x,p.y);
     if(vals[i]>0){ctx.fillStyle=c.color;ctx.font='500 9px DM Mono, monospace';const vp=pt(i,maxR+34);ctx.fillText(c.verbal[vals[i]-1],vp.x,vp.y);ctx.font='500 10px DM Mono, monospace';}
   });
+}
+
+function updateRadar(){
+  const vals=CRITERIA.map(c=>scores[c.id]||0);
+  drawRadar('radarCanvas', vals);
   const rated=CRITERIA.filter(c=>scores[c.id]);
   let wavg=null;
   if(rated.length>0){const totalW=rated.reduce((a,c)=>a+weights[c.id],0);wavg=rated.reduce((a,c)=>a+scores[c.id]*weights[c.id],0)/totalW;}
   document.getElementById('overallNum').textContent=wavg?wavg.toFixed(1):'—';
 }
-
-const GAMES={
-  'wingspan':{e:'🦅',name:'Wingspan',tags:['Engine building','1–5 players','~70 min']},
-  'gloomhaven':{e:'⚔️',name:'Gloomhaven',tags:['Campaign','1–4 players','~120 min']},
-  'catan':{e:'🏝️',name:'Catan',tags:['Negotiation','3–4 players','~90 min']},
-  'terraforming mars':{e:'🚀',name:'Terraforming Mars',tags:['Engine building','1–5 players','~120 min']},
-  'pandemic':{e:'🦠',name:'Pandemic',tags:['Cooperative','2–4 players','~60 min']},
-  'azul':{e:'🔷',name:'Azul',tags:['Abstract','2–4 players','~45 min']},
-  'scythe':{e:'⚙️',name:'Scythe',tags:['Area control','1–5 players','~115 min']},
-  'spirit island':{e:'🌿',name:'Spirit Island',tags:['Cooperative','1–4 players','~120 min']},
-};
 
 function loadGame(){
   const val=document.getElementById('gameInput').value.trim().toLowerCase();
@@ -472,57 +759,32 @@ function loadGame(){
   document.getElementById('gameNameD').textContent=g.name;
   document.getElementById('gameTagsD').innerHTML=g.tags.map(t=>`<span class="gtag">${t}</span>`).join('');
   document.getElementById('gameCard').style.display='flex';
-}
-
-function showToast(msg, type='success') {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.className = `toast ${type} show`;
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  saveState();
 }
 
 async function submitRating(){
-  const gameName = document.getElementById('gameInput').value.trim();
-  const allRated = CRITERIA.every(c => scores[c.id] !== null);
-  const validationMsg = document.getElementById('validationMsg');
-
-  if (!gameName || !allRated) {
-    validationMsg.classList.add('show');
-    return;
-  }
-  validationMsg.classList.remove('show');
-
-  const btn = document.getElementById('btnSubmit');
-  btn.disabled = true;
-  btn.textContent = 'SAVING…';
-
-  const rated = CRITERIA.filter(c => scores[c.id]);
-  const totalW = rated.reduce((a,c) => a+weights[c.id], 0);
-  const wavg = rated.reduce((a,c) => a+scores[c.id]*weights[c.id], 0) / totalW;
-
-  const { error } = await db.from('ratings').insert({
-    game_name:     gameName,
-    profile:       profileLabel,
-    complexity:    scores.complexity,
-    depth:         scores.depth,
-    luck:          scores.luck,
-    interaction:   scores.interaction,
-    table_exp:     scores.table,
-    production:    scores.production,
-    weighted_score: parseFloat(wavg.toFixed(2)),
-    notes:         document.getElementById('notes').value.trim() || null,
+  const gameName=document.getElementById('gameInput').value.trim();
+  const allRated=CRITERIA.every(c=>scores[c.id]!==null);
+  const valMsg=document.getElementById('validationMsg');
+  if(!gameName||!allRated){valMsg.classList.add('show');return;}
+  valMsg.classList.remove('show');
+  const btn=document.getElementById('btnSubmit');
+  btn.disabled=true;btn.textContent='SAVING…';
+  const rated=CRITERIA.filter(c=>scores[c.id]);
+  const totalW=rated.reduce((a,c)=>a+weights[c.id],0);
+  const wavg=rated.reduce((a,c)=>a+scores[c.id]*weights[c.id],0)/totalW;
+  const {error}=await db.from('ratings').insert({
+    game_name:gameName, profile:profileLabel,
+    complexity:scores.complexity, depth:scores.depth,
+    luck:scores.luck, interaction:scores.interaction,
+    table_exp:scores.table, production:scores.production,
+    weighted_score:parseFloat(wavg.toFixed(2)),
+    notes:document.getElementById('notes').value.trim()||null,
+    user_id:currentUser?.id||null,
   });
-
-  btn.disabled = false;
-  btn.textContent = 'SUBMIT RATING';
-
-  if (error) {
-    console.error(error);
-    showToast('Something went wrong. Please try again.', 'error');
-  } else {
-    showToast('Rating saved ✓', 'success');
-    setTimeout(() => resetRating(), 1500);
-  }
+  btn.disabled=false;btn.textContent='SUBMIT RATING';
+  if(error){console.error(error);showToast('Something went wrong. Please try again.','error');}
+  else{showToast('Rating saved ✓','success');setTimeout(()=>resetRating(),1500);}
 }
 
 function resetRating(){
@@ -532,34 +794,66 @@ function resetRating(){
   document.getElementById('validationMsg').classList.remove('show');
   CRITERIA.forEach(c=>{scores[c.id]=null;renderVerbal(c);});
   updateRadar();
-}
-
-function setStep(n){
-  ['step-q','step-p','step-r'].forEach((id,i)=>{
-    document.getElementById(id).className='step'+(i+1<n?' done':i+1===n?' active':'');
-  });
+  clearState();
 }
 
 function goToRating(){
-  buildRatingForm();setStep(3);
-  document.getElementById('panelP').classList.remove('active');
-  document.getElementById('panelR').classList.add('active');
-  document.getElementById('headerTitle').textContent='Rate a Game';
-  document.getElementById('headerSub').textContent='Scoring weighted to your gamer profile';
+  buildRatingForm();setStep(3);showPanel('panelR');saveState();
 }
 
 function retakeQuiz(){
-  currentQ=0;answers=[];
-  for(let i=0;i<QUESTIONS.length;i++) answers.push(QUESTIONS[i].type==='multi'?new Set():null);
-  initWeights();setStep(1);
-  ['panelP','panelR'].forEach(id=>document.getElementById(id).classList.remove('active'));
-  document.getElementById('panelQ').classList.add('active');
-  document.getElementById('headerTitle').textContent='Your Gamer Profile';
-  document.getElementById('headerSub').textContent='A quick questionnaire to personalise your score weights';
-  renderQ();
+  initAnswers();initWeights();profileLabel='';profileSaved=false;
+  CRITERIA.forEach(c=>scores[c.id]=null);
+  currentQ=0;setStep(1);showPanel('panelQ');renderQ();clearState();
+  // Clear saved profile from DB so they can redo it
+  if(currentUser){
+    db.from('user_profiles').delete().eq('id',currentUser.id);
+  }
 }
 
-renderQ();
+/* ── MY RATINGS ── */
+async function loadMyRatings(){
+  const list=document.getElementById('myRatingsList');
+  list.innerHTML='<div class="loading-state">LOADING…</div>';
+  const {data,error}=await db.from('ratings')
+    .select('*')
+    .eq('user_id',currentUser.id)
+    .order('created_at',{ascending:false});
+  if(error||!data||data.length===0){
+    list.innerHTML=`<div class="empty-state">
+      <div class="empty-state-title">No ratings yet</div>
+      <div class="empty-state-sub">Head to the Rate a Game tab to submit your first rating.</div>
+    </div>`;
+    document.getElementById('myRatingsSub').textContent='Your personal game ratings';
+    return;
+  }
+  document.getElementById('myRatingsSub').textContent=`${data.length} game${data.length!==1?'s':''} rated`;
+  list.innerHTML='';
+  data.forEach(r=>{
+    const vals=[r.complexity,r.depth,r.luck,r.interaction,r.table_exp,r.production].map(v=>v||0);
+    const date=new Date(r.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    const canvasId='radar-'+r.id;
+    const card=document.createElement('div');
+    card.className='rating-card';
+    card.innerHTML=`
+      <div class="rating-card-header">
+        <div class="rating-game-name">${r.game_name}</div>
+        <div class="rating-score">${r.weighted_score||'—'}</div>
+      </div>
+      <div class="rating-meta">${r.profile||''}  ·  ${date}</div>
+      <div class="radar-box" style="border:none;padding:8px 0">
+        <canvas id="${canvasId}" width="220" height="220"></canvas>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">
+        ${CRITERIA.map(c=>`<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted)">${c.name}: <span style="color:${c.color};font-weight:500">${c.verbal[(r[c.id==='table'?'table_exp':c.id]||1)-1]||'—'}</span></div>`).join('')}
+      </div>
+      ${r.notes?`<div class="rating-notes">"${r.notes}"</div>`:''}
+    `;
+    list.appendChild(card);
+    // Draw radar after element is in DOM
+    requestAnimationFrame(()=>drawRadar(canvasId, vals));
+  });
+}
 </script>
 </body>
 </html>
