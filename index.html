@@ -516,11 +516,8 @@ async function handleAuth() {
 async function signOut() {
   await db.auth.signOut();
   clearState();
-  currentUser = null;
-  showPage('pageAuth');
-  document.getElementById('headerUser').style.display = 'none';
-  document.getElementById('headerTitle').textContent = 'Welcome';
-  document.getElementById('headerSub').textContent = 'Sign in to start rating board games';
+  // Force redirect to the correct base URL instead of relying on Supabase
+  window.location.href = 'https://davidsva.github.io/boardgame-evaluator/';
 }
 
 async function onUserSignedIn(user) {
